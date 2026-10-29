@@ -42,4 +42,5 @@ Built only if time allows. Most of these come from the example mockup, not the w
 - Company name and initials badge on job cards, and salary ranges. The API returns neither.
 - Infinite scroll instead of page arrows.
 - Response caching and background refetch (for example TanStack Query).
+- Retry label lookups when the job list reloads. Today a list that started offline shows prices without "CHF" until restart (from code review).
 - Web build. The API sends no CORS headers, so the web build would need a proxy.

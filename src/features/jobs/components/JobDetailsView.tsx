@@ -11,7 +11,6 @@ interface Props {
 }
 
 export function JobDetailsView({ job, lookups }: Props) {
-  const currency = lookups.currencies.get(job.hourlyWage.currencyId);
   const { addressStreet, extraAddress, zip, city, countryId } = job.jobLocation;
   const location = [
     addressStreet,
@@ -49,11 +48,14 @@ export function JobDetailsView({ job, lookups }: Props) {
       <View style={styles.section}>
         <Row
           label="Hourly wage"
-          value={`${formatMoney(job.hourlyWage.amount, currency)}/h`}
+          value={`${formatMoney(job.hourlyWage.amount, lookups.currencies.get(job.hourlyWage.currencyId))}/h`}
         />
         <Row
           label="Total pay"
-          value={formatMoney(job.salary.amount, currency)}
+          value={formatMoney(
+            job.salary.amount,
+            lookups.currencies.get(job.salary.currencyId),
+          )}
         />
         {/* workDuration is in minutes: established from examples (salary / hourlyWage × 60), not from
             official API docs. See docs/DEV_NOTES.md. */}

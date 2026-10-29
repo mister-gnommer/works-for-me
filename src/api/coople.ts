@@ -1,4 +1,5 @@
 const BASE_URL = "https://www.coople.com/ch/resources/api";
+const REQUEST_TIMEOUT_MS = 15_000;
 
 export class ApiError extends Error {
   constructor(
@@ -28,21 +29,31 @@ export async function getData<T>(
   path: string,
   headers?: Record<string, string>,
 ): Promise<T> {
-  const response = await fetch(BASE_URL + path, { headers });
-  if (!response.ok) {
-    throw new ApiError(
-      `Request failed with status ${response.status}`,
-      response.status,
-    );
+  // React Native's fetch never times out on its own, so a stalled connection would spin forever.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const response = await fetch(BASE_URL + path, {
+      headers,
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new ApiError(
+        `Request failed with status ${response.status}`,
+        response.status,
+      );
+    }
+    const body: Envelope<T> = await response.json();
+    if (body.error || body.data === undefined) {
+      throw new ApiError(
+        `API error: ${body.errorCode ?? "missing data"}`,
+        response.status,
+      );
+    }
+    return body.data;
+  } finally {
+    clearTimeout(timer);
   }
-  const body: Envelope<T> = await response.json();
-  if (body.error || body.data === undefined) {
-    throw new ApiError(
-      `API error: ${body.errorCode ?? "missing data"}`,
-      response.status,
-    );
-  }
-  return body.data;
 }
 
 /**

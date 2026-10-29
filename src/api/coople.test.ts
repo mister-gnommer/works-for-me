@@ -30,6 +30,27 @@ describe("getData", () => {
   });
 });
 
+describe("getData timeout", () => {
+  afterEach(() => jest.useRealTimers());
+
+  it("aborts a request that never answers", async () => {
+    jest.useFakeTimers();
+    globalThis.fetch = jest.fn(
+      (_url: string, init: RequestInit) =>
+        new Promise<Response>((_resolve, reject) => {
+          init.signal?.addEventListener("abort", () =>
+            reject(new Error("Aborted")),
+          );
+        }),
+    ) as unknown as typeof fetch; // Test double only implements the call shape getData uses.
+
+    const result = getData("/x");
+    jest.advanceTimersByTime(15_000);
+
+    await expect(result).rejects.toThrow("Aborted");
+  });
+});
+
 describe("isNotFound", () => {
   it("treats 401 (malformed id) as not found but not other failures", () => {
     expect(isNotFound(new ApiError("", 401))).toBe(true);

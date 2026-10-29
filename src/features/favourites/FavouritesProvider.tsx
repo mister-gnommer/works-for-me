@@ -22,26 +22,34 @@ const FavouritesContext = createContext<Favourites | undefined>(undefined);
 /** Holds favourite job ids for the whole app and keeps them in AsyncStorage. */
 export function FavouritesProvider({ children }: { children: ReactNode }) {
   const [ids, setIds] = useState<ReadonlySet<string>>(new Set());
-  const [loaded, setLoaded] = useState(false);
+  // Saving is allowed only after a successful read; saving otherwise would overwrite stored
+  // favourites (with an empty set before the read, or with a partial one if the read failed).
+  const [storage, setStorage] = useState<"loading" | "ready" | "readFailed">(
+    "loading",
+  );
 
   useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY)
-      .catch(() => null)
-      .then((raw) => {
+    AsyncStorage.getItem(STORAGE_KEY).then(
+      (raw) => {
         // Merge, so a star tapped before storage finished loading is not lost.
         setIds((current) => new Set([...parseIds(raw), ...current]));
-        setLoaded(true);
-      });
+        setStorage("ready");
+      },
+      (error: unknown) => {
+        // Favourites still work in memory for this session; stored ones stay untouched.
+        console.warn("Could not read favourites", error);
+        setStorage("readFailed");
+      },
+    );
   }, []);
 
   useEffect(() => {
-    // Saving before the first load would overwrite stored favourites with an empty set.
-    if (loaded) {
+    if (storage === "ready") {
       AsyncStorage.setItem(STORAGE_KEY, serializeIds(ids)).catch(
         (error: unknown) => console.warn("Could not save favourites", error),
       );
     }
-  }, [ids, loaded]);
+  }, [ids, storage]);
 
   const isFavourite = useCallback((id: string) => ids.has(id), [ids]);
   const toggle = useCallback(
