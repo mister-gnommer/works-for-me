@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { FavouriteButton } from "../../favourites/FavouriteButton";
 import type { JobSummary } from "../api/jobs";
 import { formatDateTime, formatMoney } from "../format";
 
@@ -21,6 +22,7 @@ export function JobCard({ job, currency, onPress }: Props) {
         </Text>
         <Text style={styles.meta}>Starts {formatDateTime(job.periodFrom)}</Text>
       </View>
+      <FavouriteButton jobId={job.workAssignmentId} />
     </Pressable>
   );
 }

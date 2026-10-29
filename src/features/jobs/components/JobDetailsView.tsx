@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { FavouriteButton } from "../../favourites/FavouriteButton";
 import type { Lookups } from "../../lookups/api/lookups";
 import type { JobDetails } from "../api/jobs";
 import { formatDateTime, formatMoney } from "../format";
@@ -24,7 +25,10 @@ export function JobDetailsView({ job, lookups }: Props) {
 
   return (
     <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.title}>{job.workAssignmentName}</Text>
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>{job.workAssignmentName}</Text>
+        <FavouriteButton jobId={job.workAssignmentId} />
+      </View>
 
       <View style={styles.section}>
         <Row
@@ -96,7 +100,8 @@ function Section({ title, text }: { title: string; text?: string }) {
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
-  title: { fontSize: 22, fontWeight: "700" },
+  titleRow: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
+  title: { flex: 1, fontSize: 22, fontWeight: "700" },
   section: { backgroundColor: "#fff", borderRadius: 10, padding: 16, gap: 8 },
   sectionTitle: { fontSize: 16, fontWeight: "600" },
   row: { flexDirection: "row", gap: 12 },
