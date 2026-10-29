@@ -9,11 +9,13 @@ import {
   LoadingView,
   MessageView,
 } from "../src/features/jobs/components/StatusViews";
+import { useLookups } from "../src/features/lookups/hooks/useLookups";
 import { useAsync } from "../src/hooks/useAsync";
 
 export default function JobListScreen() {
   const [page, setPage] = useState(0);
   const jobs = useAsync(() => fetchJobPage(page), [page]);
+  const { currencies } = useLookups();
 
   if (jobs.status === "loading") {
     return <LoadingView />;
@@ -39,6 +41,7 @@ export default function JobListScreen() {
           renderItem={({ item }) => (
             <JobCard
               job={item}
+              currency={currencies.get(item.hourlyWage.currencyId)}
               onPress={() =>
                 router.push({
                   pathname: "/job/[id]",

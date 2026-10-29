@@ -3,20 +3,21 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { JobSummary } from "../api/jobs";
 import { formatDateTime, formatMoney } from "../format";
 
-export function JobCard({
-  job,
-  onPress,
-}: {
+interface Props {
   job: JobSummary;
+  /** Currency label for the job's wage, if known. */
+  currency?: string;
   onPress: () => void;
-}) {
+}
+
+export function JobCard({ job, currency, onPress }: Props) {
   return (
     <Pressable style={styles.card} onPress={onPress} accessibilityRole="link">
       <View style={styles.body}>
         <Text style={styles.title}>{job.workAssignmentName}</Text>
         <Text style={styles.meta}>
           {job.jobLocation.zip} {job.jobLocation.city} ·{" "}
-          {formatMoney(job.hourlyWage.amount)}/h
+          {formatMoney(job.hourlyWage.amount, currency)}/h
         </Text>
         <Text style={styles.meta}>Starts {formatDateTime(job.periodFrom)}</Text>
       </View>
