@@ -8,3 +8,7 @@ Do not use for: refactoring, debugging, or reviewing code that does not depend o
 2. Pick the best match (ID format: `/org/project`) by: exact name match, description relevance, code snippet count, source reputation (High/Medium preferred), and benchmark score (higher is better). If results don't look right, try alternate names or queries (e.g., "next.js" not "nextjs", or rephrase the question). Use version-specific IDs when the user mentions a version
 3. `query-docs` with the selected library ID and what to look up in the library's documentation (not single words), scoped to a single concept. If the question spans multiple distinct concepts (e.g. routing and auth and caching), make a separate `query-docs` call per concept with the same library ID, unless the question is about how the concepts interact — combined queries dilute ranking and return shallow results for each topic
 4. Answer using the fetched docs
+
+## Cloud fallback
+
+If Context7 MCP tools are unavailable, use `ctx7 library "<library name>" "<full question>" --json`, then `ctx7 docs "<returned library ID>" "<focused question>" --json`; these perform the same resolve-then-query workflow. If neither MCP nor the CLI works and there is no straightforward workaround, ask the user how to proceed.
