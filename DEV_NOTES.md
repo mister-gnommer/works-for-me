@@ -21,7 +21,7 @@ Background for reviewers. Every decision and the options behind it are recorded 
 
 ## To Do
 
-- [ ] Create the Expo + TypeScript app with Expo Router (exact dependency versions).
+- [x] Create the Expo + TypeScript app with Expo Router (exact dependency versions).
 - [ ] API client: list (page number, 30 per page) and details. Treat non-OK responses (`404` for an unknown id, `401` for a malformed one) and `error: true` bodies as errors.
 - [ ] Job list screen: name, city, hourly wage, start date, favourite star; loading, error-with-retry and empty states.
 - [ ] Pagination: `‹` / `›` arrows, `«` back to page 1 from page 2 on; disable `›` on the last page (from `total`).
