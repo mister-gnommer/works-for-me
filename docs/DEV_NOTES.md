@@ -12,12 +12,13 @@ Background for reviewers. Every decision and the options behind it are recorded 
   | `currencyId` | `/value-lists/Currency` | 1 = CHF |
   | `countryId` | `/value-lists/Country` | 1 = Switzerland |
   | `jobProfileId` | `/job-profiles` | 70 = Chef/Cook |
-  | `educationalLevelId` | `/value-lists/EducationalLevel` | 3 = Gelernt |
+  | `educationalLevelId` | `/value-lists/EducationalLevel` | 3 = Skilled |
 
-  The labels were checked against what the job page shows for the same job (`CHF 32.00 p/h`, `Koch/Köchin`, `Gelernt`). Each list is fetched once and kept in memory. If a lookup fails, the raw value is shown and the screen still works. Education level names repeat across ids, so ids stay the key.
+  The labels were checked against what the job page shows for the same job (`CHF 32.00 p/h`, and the German `Koch/Köchin` and `Gelernt`). Each list is fetched once and kept in memory. If a lookup fails, the label is left out (a price shows without its currency) and the screen still works. Education level names repeat across ids, so ids stay the key.
 - **`workDuration` is in minutes, established from examples rather than docs.** On six sampled jobs, `salary / hourlyWage × 60` equals `workDuration` exactly (for example 400 / 32 × 60 = 750). For multi-shift jobs, both `salary` and `workDuration` are totals across all shifts.
 - **Dates show in the phone's time zone** as `yyyy-MM-dd HH:mm`. The API sends exact moments (Unix ms), so a shift starting 09:00 in Zürich shows as 07:00 on a phone two hours behind.
 - **Error codes were observed, not documented.** An unknown job id returns `404`, a malformed one `401`.
+- **Requests time out after 15 seconds.** React Native's `fetch` has no timeout of its own, so without one a stalled connection would show a spinner forever instead of the retry screen.
 
 ## To Do
 

@@ -8,6 +8,14 @@ Works For Me is a mobile app for browsing the public jobs listed on Coople. Open
 - **Job details** opens when you tap a job. You can also open it directly from a link to `/job/<workAssignmentId>`.
 - **Favourites**: tap the star on a job in the list or on its details screen. Favourites are kept after the app restarts.
 
+## Screenshots
+
+Taken from the Expo web preview at phone size. In Expo Go, fonts and the header follow the platform defaults.
+
+| Job list | Next page loading | Page 2 | Job details | Unknown job |
+|---|---|---|---|---|
+| ![Job list](docs/screenshots/1-job-list.png) | ![Next page loading](docs/screenshots/2-loading-next-page.png) | ![Page 2](docs/screenshots/3-page-2.png) | ![Job details](docs/screenshots/4-job-details.png) | ![Unknown job](docs/screenshots/5-job-not-found.png) |
+
 ## Setup
 
 Requirements: Node.js 22+ and the [Expo Go](https://expo.dev/go) app on your phone.
@@ -22,11 +30,13 @@ npx expo start
 
 Scan the QR code with Expo Go (Android) or the Camera app (iOS).
 
-To open a job from a link in Expo Go (on a simulator), replace the address with the one `npx expo start` prints:
+To open a job from a link in Expo Go, use the address `npx expo start` prints. On a phone, open `exp://<ip>:8081/--/job/<workAssignmentId>` from a message or the browser. On a simulator:
 
 ```bash
 npx uri-scheme open "exp://127.0.0.1:8081/--/job/<workAssignmentId>" --ios
 ```
+
+In a standalone build the link is `worksforme://job/<workAssignmentId>`.
 
 Checks:
 
