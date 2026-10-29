@@ -14,25 +14,30 @@ export function LoadingView() {
   );
 }
 
+interface MessageViewProps {
+  message: string;
+  /** Button text; the button shows only together with `onAction`. */
+  actionLabel?: string;
+  onAction?: () => void;
+}
+
 export function MessageView({
   message,
-  onRetry,
-}: {
-  message: string;
-  onRetry?: () => void;
-}) {
+  actionLabel,
+  onAction,
+}: MessageViewProps) {
   return (
     <View style={styles.center}>
       <Text style={styles.message}>{message}</Text>
-      {onRetry && (
+      {actionLabel && onAction ? (
         <Pressable
           style={styles.button}
-          onPress={onRetry}
+          onPress={onAction}
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>Try again</Text>
+          <Text style={styles.buttonText}>{actionLabel}</Text>
         </Pressable>
-      )}
+      ) : null}
     </View>
   );
 }

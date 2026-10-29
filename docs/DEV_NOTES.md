@@ -26,7 +26,7 @@ Background for reviewers. Every decision and the options behind it are recorded 
 - [x] Job list screen: name, city, hourly wage, start date, favourite star; loading, error-with-retry and empty states.
 - [x] Pagination: `‹` / `›` arrows, `«` back to page 1 from page 2 on; disable `›` on the last page (from `total`).
 - [x] Lookups (English): currency, country, job profile, educational level; fetched once, raw value on failure.
-- [ ] Job details screen at `/job/[id]`: job profile, educational level, wage, total pay, dates, shifts, work duration (with a code comment that the unit is derived from examples), location and country, requirements, clothing; favourite toggle; loading, error-with-retry and not-found states.
+- [x] Job details screen at `/job/[id]`: job profile, educational level, wage, total pay, dates, shifts, work duration (with a code comment that the unit is derived from examples), location and country, requirements, clothing; favourite toggle; loading, error-with-retry and not-found states.
 - [ ] Favourites: context and AsyncStorage, shared by both screens.
 - [ ] Tests: API response parsing and the favourites toggle.
 - [ ] Update Setup and Architecture in [README.md](../README.md) to match the code.

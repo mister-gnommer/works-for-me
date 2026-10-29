@@ -24,7 +24,8 @@ export default function JobListScreen() {
     return (
       <MessageView
         message="Couldn't load jobs. Check your connection and try again."
-        onRetry={jobs.reload}
+        actionLabel="Try again"
+        onAction={jobs.reload}
       />
     );
   }
