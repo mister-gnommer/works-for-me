@@ -46,4 +46,4 @@ npm test
 - **Favourites** are a set of job ids in a React context, saved to AsyncStorage.
 - **Tests** (Jest) cover parsing API responses into data or errors, and toggling favourites. There are no UI tests.
 
-Technical decisions, the build plan and deferred ideas are in [DEV_NOTES.md](DEV_NOTES.md).
+Technical decisions, the build plan, deferred ideas and the decision ledger are in [`docs/`](docs/).
