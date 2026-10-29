@@ -51,3 +51,83 @@ Decision record from the planning interview.
 #### Q9 — Tests
 
 - ✅ **A — Jest: API response parsing and the favourites toggle; no UI tests.**
+
+### Round 1 — Project setup
+
+#### Q1 — Where the app lives
+
+- ✅ **A — Repo root (`package.json`, `app/`, `src/` at top level).**
+- B — Subfolder such as `mobile/`
+
+#### Q2 — Scaffold
+
+- ✅ **A — `create-expo-app --template blank-typescript`, then add `expo-router`.**
+- B — Default template, delete examples
+
+#### Q3 — Code layout
+
+- A — Flat: `app/` routes + `src/{api,favourites,format}.ts(x)`
+- ✅ **B — Feature folders (`src/features/jobs/{api,components,hooks}/…`).**
+
+#### Q4 — Value formatting
+
+- ↪ Open — user asked for an example response and where CHF comes from; superseded by Round 2 (Q7, Q9).
+
+#### Q5 — Lint and format
+
+- ✅ **A — Expo ESLint (`npx expo lint`) + Prettier defaults.**
+- B — ESLint only
+- C — None
+
+#### Q6 — Commits during the build
+
+- ✅ **A — Commit and push to `main` after each To Do item, without asking.**
+- B — One commit at the end
+- C — Ask before each commit
+
+### Round 2 — Labels and formatting
+
+Asked as Q1–Q5; recorded here as Q7–Q11. From now on numbering is incremental across rounds.
+
+#### Q7 — Which code labels to show
+
+- A — Currency, country, job profile (skip educational level)
+- ✅ **B — All four: currency, country, job profile, educational level (from Coople lookup endpoints).**
+- C — Hardcode CHF / Switzerland only
+
+#### Q8 — Label language
+
+- ✅ **A — English (`Accept-Language: en`).**
+- B — German (API default)
+- C — Device language
+
+#### Q9 — Time zone for dates
+
+- Open — user's goal: a shift starting at 09:00 Swiss time shows as 07:00 for a user two hours behind. Re-asked as Q12.
+
+#### Q10 — Work duration
+
+- ✅ **A — Show in hours (total across shifts), with a code comment that the minutes unit was established from examples, not official docs.**
+- B — Leave it off
+
+#### Q11 — `tmp/` in git
+
+- ✅ **A — Gitignore `tmp/`.**
+- B — Commit the samples
+
+#### Follow-up — README
+
+- ◐ **Add a "Technical decisions" section: label language, lookup endpoints and how they were found and checked, `workDuration` unit, observed error codes.**
+
+### Round 3 — Dates and doc commits
+
+#### Q12 — Time zone for dates
+
+- A — Always Swiss time (`Europe/Zurich`)
+- ✅ **B — Phone's time zone, `yyyy-MM-dd HH:mm`.**
+
+#### Q13 — Committing planning docs
+
+- ✅ **A — Commit and push the ledger and README after every grilling round.**
+- B — Once, when grilling ends
+- C — Ask each time
