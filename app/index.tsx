@@ -2,7 +2,11 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { fetchJobPage, PAGE_SIZE } from "../src/features/jobs/api/jobs";
+import {
+  fetchJobPage,
+  type JobPage,
+  PAGE_SIZE,
+} from "../src/features/jobs/api/jobs";
 import { JobCard } from "../src/features/jobs/components/JobCard";
 import { Pagination } from "../src/features/jobs/components/Pagination";
 import {
@@ -10,11 +14,41 @@ import {
   MessageView,
 } from "../src/features/jobs/components/StatusViews";
 import { useLookups } from "../src/features/lookups/hooks/useLookups";
-import { useAsync } from "../src/hooks/useAsync";
+import { type AsyncState, useAsync } from "../src/hooks/useAsync";
 
 export default function JobListScreen() {
   const [page, setPage] = useState(0);
   const jobs = useAsync(() => fetchJobPage(page), [page]);
+
+  // Remember the last known total so the page arrows stay put while the next page loads.
+  // Updating state during render is React's recommended way to derive from changing data.
+  const [total, setTotal] = useState<number>();
+  if (jobs.status === "success" && jobs.data.total !== total) {
+    setTotal(jobs.data.total);
+  }
+
+  return (
+    <View style={styles.screen}>
+      <JobListContent jobs={jobs} onRetry={jobs.reload} />
+      {total !== undefined && (
+        <Pagination
+          page={page}
+          pageCount={Math.max(1, Math.ceil(total / PAGE_SIZE))}
+          onChange={setPage}
+        />
+      )}
+    </View>
+  );
+}
+
+/** The area above the page arrows: a spinner, an error, an empty message or the jobs. */
+function JobListContent({
+  jobs,
+  onRetry,
+}: {
+  jobs: AsyncState<JobPage>;
+  onRetry: () => void;
+}) {
   const { currencies } = useLookups();
 
   if (jobs.status === "loading") {
@@ -25,37 +59,31 @@ export default function JobListScreen() {
       <MessageView
         message="Couldn't load jobs. Check your connection and try again."
         actionLabel="Try again"
-        onAction={jobs.reload}
+        onAction={onRetry}
       />
     );
   }
-
-  const pageCount = Math.max(1, Math.ceil(jobs.data.total / PAGE_SIZE));
+  if (jobs.data.items.length === 0) {
+    return <MessageView message="No jobs on this page." />;
+  }
   return (
-    <View style={styles.screen}>
-      {jobs.data.items.length === 0 ? (
-        <MessageView message="No jobs on this page." />
-      ) : (
-        <FlatList
-          data={jobs.data.items}
-          keyExtractor={(job) => job.workAssignmentId}
-          renderItem={({ item }) => (
-            <JobCard
-              job={item}
-              currency={currencies.get(item.hourlyWage.currencyId)}
-              onPress={() =>
-                router.push({
-                  pathname: "/job/[id]",
-                  params: { id: item.workAssignmentId },
-                })
-              }
-            />
-          )}
-          contentContainerStyle={styles.list}
+    <FlatList
+      data={jobs.data.items}
+      keyExtractor={(job) => job.workAssignmentId}
+      renderItem={({ item }) => (
+        <JobCard
+          job={item}
+          currency={currencies.get(item.hourlyWage.currencyId)}
+          onPress={() =>
+            router.push({
+              pathname: "/job/[id]",
+              params: { id: item.workAssignmentId },
+            })
+          }
         />
       )}
-      <Pagination page={page} pageCount={pageCount} onChange={setPage} />
-    </View>
+      contentContainerStyle={styles.list}
+    />
   );
 }
 
