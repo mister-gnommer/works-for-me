@@ -12,9 +12,11 @@ Works For Me is a mobile app for browsing the public jobs listed on Coople. Open
 
 Taken from the Expo web preview at phone size. In Expo Go, fonts and the header follow the platform defaults.
 
+A screen recording of the app running in Expo Go on a phone: [Screen_Recording_20261029_193223_Expo Go.mp4](<Screen_Recording_20261029_193223_Expo Go.mp4>).
+
 | Job list | Next page loading | Page 2 | Job details | Unknown job |
 |---|---|---|---|---|
-| ![Job list](docs/screenshots/1-job-list.png) | ![Next page loading](docs/screenshots/2-loading-next-page.png) | ![Page 2](docs/screenshots/3-page-2.png) | ![Job details](docs/screenshots/4-job-details.png) | ![Unknown job](docs/screenshots/5-job-not-found.png) |
+| <img src="docs/screenshots/1-job-list.png" alt="Job list" width="160"> | <img src="docs/screenshots/2-loading-next-page.png" alt="Next page loading" width="160"> | <img src="docs/screenshots/3-page-2.png" alt="Page 2" width="160"> | <img src="docs/screenshots/4-job-details.png" alt="Job details" width="160"> | <img src="docs/screenshots/5-job-not-found.png" alt="Unknown job" width="160"> |
 
 ## Setup
 

@@ -31,7 +31,7 @@ Background for reviewers. Every decision and the options behind it are recorded 
 - [x] Favourites: context and AsyncStorage, shared by both screens.
 - [x] Tests: API response parsing and the favourites toggle.
 - [x] Update Setup and Architecture in [README.md](../README.md) to match the code.
-- [ ] Record the app with Expo Go on a phone.
+- [x] Record the app with Expo Go on a phone.
 
 ## Deferred
 
