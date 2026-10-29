@@ -2,8 +2,6 @@
 
 Works For Me is a mobile app for browsing the public jobs listed on Coople. Open a job to see everything about it, and star the ones you like so you can find them later.
 
-> Setup and architecture below describe the planned app and will be updated once it is built.
-
 ## Usage
 
 - **Job list** shows 30 jobs per page. Use `›` / `‹` to go to the next or previous page, and `«` (shown from page 2 on) to jump back to page 1.
@@ -30,20 +28,41 @@ To open a job from a link in Expo Go (on a simulator), replace the address with 
 npx uri-scheme open "exp://127.0.0.1:8081/--/job/<workAssignmentId>" --ios
 ```
 
-Run the tests:
+Checks:
 
 ```bash
 npm test
 ```
 
+```bash
+npm run lint
+```
+
+```bash
+npm run typecheck
+```
+
 ## Architecture
 
-- **Expo + TypeScript + Expo Router.** Routes are files: `app/index.tsx` is the job list and `app/job/[id].tsx` is the details screen, which also makes `/job/:id` work as a link.
+```
+app/                      Expo Router routes (one file per screen)
+  _layout.tsx             stack navigator + favourites provider
+  index.tsx               job list with page arrows
+  job/[id].tsx            job details; also the /job/:id deep link
+src/
+  api/coople.ts           fetch wrapper: unwraps Coople's { data, error } envelope, throws ApiError
+  hooks/useAsync.ts       loading / error / success state for one async call, with retry
+  features/
+    jobs/                 job API calls, formatting, screen components
+    lookups/              English labels for numeric codes (currency, country, role, experience)
+    favourites/           favourite ids in a React context, saved to AsyncStorage
+```
+
 - **Data** comes from Coople's public API through plain `fetch`, with no client library:
   - list: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/list?pageNum=<n>&pageSize=30`
   - details: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/<workAssignmentId>`
-- **Error states**: every screen shows loading, error-with-retry and empty states; any non-OK response counts as an error.
-- **Favourites** are a set of job ids in a React context, saved to AsyncStorage.
-- **Tests** (Jest) cover parsing API responses into data or errors, and toggling favourites. There are no UI tests.
+- **Error states**: both screens show loading, error-with-retry and empty or not-found states. Any non-OK response, or a body with `error: true`, counts as an error.
+- **Labels** load once per app run. If a lookup fails, the screen still works and the label is left out.
+- **Tests** (Jest) cover the API envelope and error handling, lookup loading, formatting, and favourite ids. There are no UI tests.
 
 Technical decisions, the build plan, deferred ideas and the decision ledger are in [`docs/`](docs/).

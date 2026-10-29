@@ -29,7 +29,7 @@ Background for reviewers. Every decision and the options behind it are recorded 
 - [x] Job details screen at `/job/[id]`: job profile, educational level, wage, total pay, dates, shifts, work duration (with a code comment that the unit is derived from examples), location and country, requirements, clothing; favourite toggle; loading, error-with-retry and not-found states.
 - [x] Favourites: context and AsyncStorage, shared by both screens.
 - [x] Tests: API response parsing and the favourites toggle.
-- [ ] Update Setup and Architecture in [README.md](../README.md) to match the code.
+- [x] Update Setup and Architecture in [README.md](../README.md) to match the code.
 - [ ] Record the app with Expo Go on a phone.
 
 ## Deferred
