@@ -1,6 +1,6 @@
-# Coople Jobs
+# Works For Me
 
-Coople Jobs is a mobile app for browsing the public jobs listed on Coople. Open a job to see everything about it, and star the ones you like so you can find them later.
+Works For Me is a mobile app for browsing the public jobs listed on Coople. Open a job to see everything about it, and star the ones you like so you can find them later.
 
 > Setup and architecture below describe the planned app and will be updated once it is built.
 
