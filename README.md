@@ -54,6 +54,8 @@ npm run lint
 npm run typecheck
 ```
 
+End-to-end flows in `.maestro/` drive Expo Go on an Android phone over USB or an emulator, against the real API. Setup and how to run them: [docs/E2E.md](docs/E2E.md).
+
 ## Architecture
 
 ```

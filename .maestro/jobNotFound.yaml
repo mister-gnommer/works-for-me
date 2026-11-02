@@ -1,0 +1,10 @@
+appId: host.exp.exponent
+---
+- openLink: exp://127.0.0.1:8081/--/job/does-not-exist
+- extendedWaitUntil:
+    visible: "This job doesn't exist.*"
+    timeout: 60000
+- tapOn: "Go to jobs"
+- extendedWaitUntil:
+    visible: 'Page 1 of \d+'
+    timeout: 15000

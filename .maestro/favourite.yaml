@@ -1,0 +1,23 @@
+appId: host.exp.exponent
+---
+- openLink: exp://127.0.0.1:8081
+# The first run waits for Metro to bundle the app.
+- extendedWaitUntil:
+    visible: 'Page 1 of \d+'
+    timeout: 60000
+- tapOn:
+    text: "Starts .*"
+    index: 0
+- assertVisible: "Hourly wage"
+# Expo Go can't clear only this app's storage, so undo a star left by a failed run.
+- runFlow:
+    when:
+      visible: "Remove from favourites"
+    commands:
+      - tapOn: "Remove from favourites"
+- tapOn: "Add to favourites"
+- assertVisible: "Remove from favourites"
+- back
+- assertVisible: 'Page 1 of \d+'
+- tapOn: "Remove from favourites"
+- assertNotVisible: "Remove from favourites"
