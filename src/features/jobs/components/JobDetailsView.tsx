@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { useColors } from "../../../theme";
 import { FavouriteButton } from "../../favourites/FavouriteButton";
 import type { Lookups } from "../../lookups/api/lookups";
 import type { JobDetails } from "../api/jobs";
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export function JobDetailsView({ job, lookups }: Props) {
+  const colors = useColors();
+  const section = [styles.section, { backgroundColor: colors.card }];
   const { addressStreet, extraAddress, zip, city, countryId } = job.jobLocation;
   const location = [
     addressStreet,
@@ -25,11 +28,13 @@ export function JobDetailsView({ job, lookups }: Props) {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.titleRow}>
-        <Text style={styles.title}>{job.workAssignmentName}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {job.workAssignmentName}
+        </Text>
         <FavouriteButton jobId={job.workAssignmentId} />
       </View>
 
-      <View style={styles.section}>
+      <View style={section}>
         <Row
           label="Role"
           value={lookups.jobProfiles.get(job.jobSkill.jobProfileId)}
@@ -45,7 +50,7 @@ export function JobDetailsView({ job, lookups }: Props) {
         <Row label="Location" value={location} />
       </View>
 
-      <View style={styles.section}>
+      <View style={section}>
         <Row
           label="Hourly wage"
           value={`${formatMoney(job.hourlyWage.amount, lookups.currencies.get(job.hourlyWage.currencyId))}/h`}
@@ -76,26 +81,28 @@ export function JobDetailsView({ job, lookups }: Props) {
 
 /** One labelled value; hidden when the value is unknown. */
 function Row({ label, value }: { label: string; value?: string }) {
+  const colors = useColors();
   if (!value) {
     return null;
   }
   return (
     <View style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
+      <Text style={[styles.label, { color: colors.muted }]}>{label}</Text>
+      <Text style={[styles.value, { color: colors.text }]}>{value}</Text>
     </View>
   );
 }
 
 /** A titled block of free text; hidden when there is no text. */
 function Section({ title, text }: { title: string; text?: string }) {
+  const colors = useColors();
   if (!text?.trim()) {
     return null;
   }
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-      <Text>{text.trim()}</Text>
+    <View style={[styles.section, { backgroundColor: colors.card }]}>
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>{title}</Text>
+      <Text style={{ color: colors.text }}>{text.trim()}</Text>
     </View>
   );
 }
@@ -104,9 +111,9 @@ const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
   titleRow: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
   title: { flex: 1, fontSize: 22, fontWeight: "700" },
-  section: { backgroundColor: "#fff", borderRadius: 10, padding: 16, gap: 8 },
+  section: { borderRadius: 10, padding: 16, gap: 8 },
   sectionTitle: { fontSize: 16, fontWeight: "600" },
   row: { flexDirection: "row", gap: 12 },
-  label: { width: 110, color: "#555" },
+  label: { width: 110 },
   value: { flex: 1 },
 });

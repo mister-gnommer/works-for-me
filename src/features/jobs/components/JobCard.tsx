@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { useColors } from "../../../theme";
 import { FavouriteButton } from "../../favourites/FavouriteButton";
 import type { JobSummary } from "../api/jobs";
 import { formatDateTime, formatMoney } from "../format";
@@ -12,15 +13,24 @@ interface Props {
 }
 
 export function JobCard({ job, currency, onPress }: Props) {
+  const colors = useColors();
   return (
-    <Pressable style={styles.card} onPress={onPress} accessibilityRole="link">
+    <Pressable
+      style={[styles.card, { backgroundColor: colors.card }]}
+      onPress={onPress}
+      accessibilityRole="link"
+    >
       <View style={styles.body}>
-        <Text style={styles.title}>{job.workAssignmentName}</Text>
-        <Text style={styles.meta}>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {job.workAssignmentName}
+        </Text>
+        <Text style={{ color: colors.muted }}>
           {job.jobLocation.zip} {job.jobLocation.city} ·{" "}
           {formatMoney(job.hourlyWage.amount, currency)}/h
         </Text>
-        <Text style={styles.meta}>Starts {formatDateTime(job.periodFrom)}</Text>
+        <Text style={{ color: colors.muted }}>
+          Starts {formatDateTime(job.periodFrom)}
+        </Text>
       </View>
       <FavouriteButton jobId={job.workAssignmentId} />
     </Pressable>
@@ -34,9 +44,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 12,
     borderRadius: 10,
-    backgroundColor: "#fff",
   },
   body: { flex: 1, gap: 4 },
   title: { fontSize: 16, fontWeight: "600" },
-  meta: { color: "#555" },
 });

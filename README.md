@@ -7,6 +7,7 @@ Works For Me is a mobile app for browsing the public jobs listed on Coople. Open
 - **Job list** shows 30 jobs per page. Use `›` / `‹` to go to the next or previous page, and `«` (shown from page 2 on) to jump back to page 1.
 - **Job details** opens when you tap a job. You can also open it directly from a link to `/job/<workAssignmentId>`.
 - **Favourites**: tap the star on a job in the list or on its details screen. Favourites are kept after the app restarts.
+- **Dark mode** turns on with the phone's dark setting. The app has no switch of its own.
 
 ## Screenshots
 
@@ -17,6 +18,12 @@ A screen recording of the app running in Expo Go on a phone: [Screen_Recording_2
 | Job list | Next page loading | Page 2 | Job details | Unknown job |
 |---|---|---|---|---|
 | <img src="docs/screenshots/1-job-list.png" alt="Job list" width="160"> | <img src="docs/screenshots/2-loading-next-page.png" alt="Next page loading" width="160"> | <img src="docs/screenshots/3-page-2.png" alt="Page 2" width="160"> | <img src="docs/screenshots/4-job-details.png" alt="Job details" width="160"> | <img src="docs/screenshots/5-job-not-found.png" alt="Unknown job" width="160"> |
+
+In dark mode:
+
+| Job list | Job details | Unknown job |
+|---|---|---|
+| <img src="docs/screenshots/6-dark-job-list.png" alt="Job list in dark mode" width="160"> | <img src="docs/screenshots/7-dark-job-details.png" alt="Job details in dark mode" width="160"> | <img src="docs/screenshots/8-dark-job-not-found.png" alt="Unknown job in dark mode" width="160"> |
 
 ## Setup
 
@@ -58,12 +65,13 @@ npm run typecheck
 
 ```
 app/                      Expo Router routes (one file per screen)
-  _layout.tsx             stack navigator + favourites provider
+  _layout.tsx             stack navigator, light/dark theme, favourites provider
   index.tsx               job list with page arrows
   job/[id].tsx            job details; also the /job/:id deep link
 src/
   api/coople.ts           fetch wrapper: unwraps Coople's { data, error } envelope, throws ApiError
   hooks/useAsync.ts       loading / error / success state for one async call, with retry
+  theme.ts                light and dark colour palettes, picked by the system setting
   features/
     jobs/                 job API calls, formatting, screen components
     lookups/              English labels for numeric codes (currency, country, role, experience)

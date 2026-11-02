@@ -19,6 +19,7 @@ Background for reviewers. Every decision and the options behind it are recorded 
 - **Dates show in the phone's time zone** as `yyyy-MM-dd HH:mm`. The API sends exact moments (Unix ms), so a shift starting 09:00 in Zürich shows as 07:00 on a phone two hours behind.
 - **Error codes were observed, not documented.** An unknown job id returns `404`, a malformed one `401`.
 - **Requests time out after 15 seconds.** React Native's `fetch` has no timeout of its own, so without one a stalled connection would show a spinner forever instead of the retry screen.
+- **Dark mode follows the system setting**, with no in-app switch. Colours live in one light/dark palette in `src/theme.ts`; text and icon pairs meet WCAG AA contrast. `expo-system-ui` is required for this on Android builds (Expo Go does without it).
 
 ## To Do
 

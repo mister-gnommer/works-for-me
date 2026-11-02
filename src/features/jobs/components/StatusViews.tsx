@@ -6,6 +6,8 @@ import {
   View,
 } from "react-native";
 
+import { useColors } from "../../../theme";
+
 export function LoadingView() {
   return (
     <View style={styles.center}>
@@ -26,16 +28,19 @@ export function MessageView({
   actionLabel,
   onAction,
 }: MessageViewProps) {
+  const colors = useColors();
   return (
     <View style={styles.center}>
-      <Text style={styles.message}>{message}</Text>
+      <Text style={[styles.message, { color: colors.text }]}>{message}</Text>
       {actionLabel && onAction ? (
         <Pressable
-          style={styles.button}
+          style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={onAction}
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>{actionLabel}</Text>
+          <Text style={[styles.buttonText, { color: colors.onPrimary }]}>
+            {actionLabel}
+          </Text>
         </Pressable>
       ) : null}
     </View>
@@ -55,7 +60,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
-    backgroundColor: "#5a00ff",
   },
-  buttonText: { color: "#fff", fontWeight: "600" },
+  buttonText: { fontWeight: "600" },
 });
