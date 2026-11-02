@@ -1,3 +1,8 @@
+import {
+  keepPreviousData,
+  useQuery,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
@@ -14,22 +19,25 @@ import {
   MessageView,
 } from "../src/features/jobs/components/StatusViews";
 import { useLookups } from "../src/features/lookups/hooks/useLookups";
-import { type AsyncState, useAsync } from "../src/hooks/useAsync";
 
 export default function JobListScreen() {
   const [page, setPage] = useState(0);
-  const jobs = useAsync(() => fetchJobPage(page), [page]);
+  const jobs = useQuery({
+    queryKey: ["jobs", page],
+    queryFn: () => fetchJobPage(page),
+    placeholderData: keepPreviousData,
+  });
 
-  // Remember the last known total so the page arrows stay put while the next page loads.
+  // Remember the last known total so the page arrows stay put when a page fails to load.
   // Updating state during render is React's recommended way to derive from changing data.
   const [total, setTotal] = useState<number>();
-  if (jobs.status === "success" && jobs.data.total !== total) {
+  if (jobs.data && jobs.data.total !== total) {
     setTotal(jobs.data.total);
   }
 
   return (
     <View style={styles.screen}>
-      <JobListContent jobs={jobs} onRetry={jobs.reload} />
+      <JobListContent jobs={jobs} page={page} />
       {total !== undefined && (
         <Pagination
           page={page}
@@ -41,53 +49,57 @@ export default function JobListScreen() {
   );
 }
 
-/** The area above the page arrows: a spinner, an error, an empty message or the jobs. */
+/** The area above the page arrows: the jobs (the previous page's while the next one loads), an empty message, an error or a spinner. */
 function JobListContent({
   jobs,
-  onRetry,
+  page,
 }: {
-  jobs: AsyncState<JobPage>;
-  onRetry: () => void;
+  jobs: UseQueryResult<JobPage>;
+  page: number;
 }) {
   const { currencies } = useLookups();
 
-  if (jobs.status === "loading") {
-    return <LoadingView />;
+  if (jobs.data) {
+    if (jobs.data.items.length === 0) {
+      return <MessageView message="No jobs on this page." />;
+    }
+    return (
+      <FlatList
+        // A new list per page starts it at the top instead of the old page's scroll position.
+        key={page}
+        data={jobs.data.items}
+        keyExtractor={(job) => job.workAssignmentId}
+        renderItem={({ item }) => (
+          <JobCard
+            job={item}
+            currency={currencies.get(item.hourlyWage.currencyId)}
+            onPress={() =>
+              router.push({
+                pathname: "/job/[id]",
+                params: { id: item.workAssignmentId },
+              })
+            }
+          />
+        )}
+        style={jobs.isPlaceholderData && styles.stale}
+        contentContainerStyle={styles.list}
+      />
+    );
   }
-  if (jobs.status === "error") {
+  if (jobs.isError && !jobs.isFetching) {
     return (
       <MessageView
         message="Couldn't load jobs. Check your connection and try again."
         actionLabel="Try again"
-        onAction={onRetry}
+        onAction={() => jobs.refetch()}
       />
     );
   }
-  if (jobs.data.items.length === 0) {
-    return <MessageView message="No jobs on this page." />;
-  }
-  return (
-    <FlatList
-      data={jobs.data.items}
-      keyExtractor={(job) => job.workAssignmentId}
-      renderItem={({ item }) => (
-        <JobCard
-          job={item}
-          currency={currencies.get(item.hourlyWage.currencyId)}
-          onPress={() =>
-            router.push({
-              pathname: "/job/[id]",
-              params: { id: item.workAssignmentId },
-            })
-          }
-        />
-      )}
-      contentContainerStyle={styles.list}
-    />
-  );
+  return <LoadingView />;
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#f2f2f2" },
   list: { paddingBottom: 12 },
+  stale: { opacity: 0.5 },
 });

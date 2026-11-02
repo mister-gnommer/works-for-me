@@ -29,31 +29,25 @@ export async function getData<T>(
   path: string, // TODO use template literal
   headers?: Record<string, string>,
 ): Promise<T> {
-  // React Native's fetch never times out on its own, so a stalled connection would spin forever.
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-  try {
-    const response = await fetch(BASE_URL + path, {
-      headers,
-      signal: controller.signal,
-    });
-    if (!response.ok) {
-      throw new ApiError(
-        `Request failed with status ${response.status}`,
-        response.status,
-      );
-    }
-    const body: Envelope<T> = await response.json();
-    if (body.error || body.data === undefined) {
-      throw new ApiError(
-        `API error: ${body.errorCode ?? "missing data"}`,
-        response.status,
-      );
-    }
-    return body.data;
-  } finally {
-    clearTimeout(timer);
+  const response = await fetch(BASE_URL + path, {
+    headers,
+    // React Native's fetch never times out on its own, so a stalled connection would spin forever.
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) {
+    throw new ApiError(
+      `Request failed with status ${response.status}`,
+      response.status,
+    );
   }
+  const body: Envelope<T> = await response.json();
+  if (body.error || body.data === undefined) {
+    throw new ApiError(
+      `API error: ${body.errorCode ?? "missing data"}`,
+      response.status,
+    );
+  }
+  return body.data;
 }
 
 /**

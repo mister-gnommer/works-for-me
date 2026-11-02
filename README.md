@@ -60,23 +60,23 @@ End-to-end flows in `.maestro/` drive Expo Go on an Android phone over USB or an
 
 ```
 app/                      Expo Router routes (one file per screen)
-  _layout.tsx             stack navigator + favourites provider
+  _layout.tsx             stack navigator + query client and favourites providers
   index.tsx               job list with page arrows
   job/[id].tsx            job details; also the /job/:id deep link
 src/
   api/coople.ts           fetch wrapper: unwraps Coople's { data, error } envelope, throws ApiError
-  hooks/useAsync.ts       loading / error / success state for one async call, with retry
+  api/queryClient.ts      the app's TanStack Query client (cache shared by all screens)
   features/
     jobs/                 job API calls, formatting, screen components
     lookups/              English labels for numeric codes (currency, country, role, experience)
     favourites/           favourite ids in a React context, saved to AsyncStorage
 ```
 
-- **Data** comes from Coople's public API through plain `fetch`, with no client library:
+- **Data** comes from Coople's public API through `fetch`, cached by TanStack Query per page and per job. The previous page stays visible (dimmed) while the next one loads:
   - list: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/list?pageNum=<n>&pageSize=30`
   - details: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/<workAssignmentId>`
 - **Error states**: both screens show loading, error-with-retry and empty or not-found states. Any non-OK response, or a body with `error: true`, counts as an error.
-- **Labels** load once per app run. If a lookup fails, the screen still works and the label is left out.
-- **Tests** (Jest): unit tests cover the API envelope and error handling, lookup loading, formatting, and favourite ids. Integration tests in `src/test/` render the real screens through Expo Router with only the network mocked (MSW); CI runs them with typecheck and lint.
+- **Labels** load once per app run, each list on its own. If a list fails, the screen still works, the label is left out, and the list is fetched again on the next screen.
+- **Tests** (Jest): unit tests cover the API envelope and error handling, lookup label parsing, formatting, and favourite ids. Integration tests in `src/test/` render the real screens through Expo Router with only the network mocked (MSW); CI runs them with typecheck and lint.
 
 Technical decisions, the build plan, deferred ideas and the decision ledger are in [`docs/`](docs/).

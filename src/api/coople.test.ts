@@ -31,10 +31,19 @@ describe("getData", () => {
 });
 
 describe("getData timeout", () => {
-  afterEach(() => jest.useRealTimers());
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
 
   it("aborts a request that never answers", async () => {
     jest.useFakeTimers();
+    // Jest's fake timers don't drive Node's AbortSignal.timeout, so back it with a faked setTimeout.
+    jest.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), ms);
+      return controller.signal;
+    });
     globalThis.fetch = jest.fn(
       (_url: string, init: RequestInit) =>
         new Promise<Response>((_resolve, reject) => {

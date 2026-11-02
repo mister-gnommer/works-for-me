@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
@@ -9,17 +10,20 @@ import {
   MessageView,
 } from "../../src/features/jobs/components/StatusViews";
 import { useLookups } from "../../src/features/lookups/hooks/useLookups";
-import { useAsync } from "../../src/hooks/useAsync";
 
 export default function JobDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const job = useAsync(() => fetchJob(id), [id]);
+  const job = useQuery({ queryKey: ["job", id], queryFn: () => fetchJob(id) });
   const lookups = useLookups();
 
-  if (job.status === "loading") {
-    return <LoadingView />;
+  if (job.data) {
+    return (
+      <View style={styles.screen}>
+        <JobDetailsView job={job.data} lookups={lookups} />
+      </View>
+    );
   }
-  if (job.status === "error") {
+  if (job.isError && !job.isFetching) {
     return isNotFound(job.error) ? (
       // A deep link may have no screen behind it, so offer a way to the list instead of "back".
       <MessageView
@@ -31,16 +35,11 @@ export default function JobDetailsScreen() {
       <MessageView
         message="Couldn't load this job. Check your connection and try again."
         actionLabel="Try again"
-        onAction={job.reload}
+        onAction={() => job.refetch()}
       />
     );
   }
-
-  return (
-    <View style={styles.screen}>
-      <JobDetailsView job={job.data} lookups={lookups} />
-    </View>
-  );
+  return <LoadingView />;
 }
 
 const styles = StyleSheet.create({
