@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 interface Props {
   /** Zero-based current page. */
@@ -12,7 +12,7 @@ export function Pagination({ page, pageCount, onChange }: Props) {
   // TODO use `total` to calc all pages and show `<< < 1, 2, 3, ... 14, 15 > >>` style OR infinite scroll
 
   return (
-    <View style={styles.row}>
+    <View className="flex-row items-center justify-center gap-2 border-t-hairline border-line bg-white p-3">
       {page > 0 && (
         <Arrow label="«" hint="First page" onPress={() => onChange(0)} />
       )}
@@ -22,7 +22,7 @@ export function Pagination({ page, pageCount, onChange }: Props) {
         disabled={page === 0}
         onPress={() => onChange(page - 1)}
       />
-      <Text style={styles.label}>
+      <Text className="min-w-[110px] text-center">
         Page {page + 1} of {pageCount}
       </Text>
       <Arrow
@@ -53,28 +53,11 @@ function Arrow({
       accessibilityRole="button"
       accessibilityLabel={hint}
       accessibilityState={{ disabled }}
-      style={styles.arrow}
+      className="px-3.5 py-1.5"
     >
-      <Text style={[styles.arrowText, disabled && styles.disabled]}>
+      <Text className={`text-2xl ${disabled ? "text-line" : "text-brand"}`}>
         {label}
       </Text>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    padding: 12,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: "#ccc",
-    backgroundColor: "#fff",
-  },
-  arrow: { paddingHorizontal: 14, paddingVertical: 6 },
-  arrowText: { fontSize: 24, color: "#5a00ff" },
-  disabled: { color: "#ccc" },
-  label: { minWidth: 110, textAlign: "center" },
-});

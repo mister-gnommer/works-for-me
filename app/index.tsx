@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 import {
   fetchJobPage,
@@ -36,7 +36,7 @@ export default function JobListScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <View className="flex-1 bg-screen">
       <JobListContent jobs={jobs} page={page} />
       {total !== undefined && (
         <Pagination
@@ -81,8 +81,8 @@ function JobListContent({
             }
           />
         )}
-        style={jobs.isPlaceholderData && styles.stale}
-        contentContainerStyle={styles.list}
+        className={jobs.isPlaceholderData ? "opacity-50" : undefined}
+        contentContainerClassName="pb-3"
       />
     );
   }
@@ -97,9 +97,3 @@ function JobListContent({
   }
   return <LoadingView />;
 }
-
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#f2f2f2" },
-  list: { paddingBottom: 12 },
-  stale: { opacity: 0.5 },
-});

@@ -1,14 +1,8 @@
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 export function LoadingView() {
   return (
-    <View style={styles.center}>
+    <View className="flex-1 items-center justify-center gap-4 p-6">
       <ActivityIndicator size="large" />
     </View>
   );
@@ -27,35 +21,17 @@ export function MessageView({
   onAction,
 }: MessageViewProps) {
   return (
-    <View style={styles.center}>
-      <Text style={styles.message}>{message}</Text>
+    <View className="flex-1 items-center justify-center gap-4 p-6">
+      <Text className="text-center text-base">{message}</Text>
       {actionLabel && onAction ? (
         <Pressable
-          style={styles.button}
+          className="rounded-lg bg-brand px-5 py-2.5"
           onPress={onAction}
           accessibilityRole="button"
         >
-          <Text style={styles.buttonText}>{actionLabel}</Text>
+          <Text className="font-semibold text-white">{actionLabel}</Text>
         </Pressable>
       ) : null}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-    gap: 16,
-  },
-  message: { fontSize: 16, textAlign: "center" },
-  button: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: "#5a00ff",
-  },
-  buttonText: { color: "#fff", fontWeight: "600" },
-});

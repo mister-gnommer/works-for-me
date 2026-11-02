@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { FavouriteButton } from "../../favourites/FavouriteButton";
 import type { Lookups } from "../../lookups/api/lookups";
@@ -23,13 +23,15 @@ export function JobDetailsView({ job, lookups }: Props) {
     .join(", ");
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
-      <View style={styles.titleRow}>
-        <Text style={styles.title}>{job.workAssignmentName}</Text>
+    <ScrollView contentContainerClassName="p-4 gap-4">
+      <View className="flex-row items-start gap-3">
+        <Text className="flex-1 text-[22px] font-bold">
+          {job.workAssignmentName}
+        </Text>
         <FavouriteButton jobId={job.workAssignmentId} />
       </View>
 
-      <View style={styles.section}>
+      <View className="gap-2 rounded-[10px] bg-white p-4">
         <Row
           label="Role"
           value={lookups.jobProfiles.get(job.jobSkill.jobProfileId)}
@@ -45,7 +47,7 @@ export function JobDetailsView({ job, lookups }: Props) {
         <Row label="Location" value={location} />
       </View>
 
-      <View style={styles.section}>
+      <View className="gap-2 rounded-[10px] bg-white p-4">
         <Row
           label="Hourly wage"
           value={`${formatMoney(job.hourlyWage.amount, lookups.currencies.get(job.hourlyWage.currencyId))}/h`}
@@ -80,9 +82,9 @@ function Row({ label, value }: { label: string; value?: string }) {
     return null;
   }
   return (
-    <View style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
+    <View className="flex-row gap-3">
+      <Text className="w-[110px] text-muted">{label}</Text>
+      <Text className="flex-1">{value}</Text>
     </View>
   );
 }
@@ -93,20 +95,9 @@ function Section({ title, text }: { title: string; text?: string }) {
     return null;
   }
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+    <View className="gap-2 rounded-[10px] bg-white p-4">
+      <Text className="text-base font-semibold">{title}</Text>
       <Text>{text.trim()}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  content: { padding: 16, gap: 16 },
-  titleRow: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
-  title: { flex: 1, fontSize: 22, fontWeight: "700" },
-  section: { backgroundColor: "#fff", borderRadius: 10, padding: 16, gap: 8 },
-  sectionTitle: { fontSize: 16, fontWeight: "600" },
-  row: { flexDirection: "row", gap: 12 },
-  label: { width: 110, color: "#555" },
-  value: { flex: 1 },
-});

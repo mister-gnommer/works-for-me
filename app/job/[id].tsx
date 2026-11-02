@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import { isNotFound } from "../../src/api/coople";
 import { fetchJob } from "../../src/features/jobs/api/jobs";
@@ -18,7 +18,7 @@ export default function JobDetailsScreen() {
 
   if (job.data) {
     return (
-      <View style={styles.screen}>
+      <View className="flex-1 bg-screen">
         <JobDetailsView job={job.data} lookups={lookups} />
       </View>
     );
@@ -41,7 +41,3 @@ export default function JobDetailsScreen() {
   }
   return <LoadingView />;
 }
-
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#f2f2f2" },
-});

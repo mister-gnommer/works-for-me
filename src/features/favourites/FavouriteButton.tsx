@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import { useFavourites } from "./FavouritesProvider";
 
@@ -15,14 +15,11 @@ export function FavouriteButton({ jobId }: { jobId: string }) {
       }
       accessibilityState={{ selected: active }}
     >
-      <Text style={[styles.star, active && styles.active]}>
+      <Text
+        className={`text-[26px] ${active ? "text-favourite" : "text-faint"}`}
+      >
         {active ? "★" : "☆"}
       </Text>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  star: { fontSize: 26, color: "#999" },
-  active: { color: "#e5293b" },
-});

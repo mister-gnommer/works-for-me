@@ -9,6 +9,11 @@ const esmOnly = ["msw", "@mswjs", "@open-draft", "rettime", "until-async"];
 module.exports = {
   preset: "jest-expo",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  moduleNameMapper: {
+    ...preset.moduleNameMapper,
+    // Tailwind's CSS is compiled by Metro; tests check behaviour, not styles.
+    "\\.css$": "<rootDir>/src/test/emptyModule.js",
+  },
   transform: {
     ...preset.transform,
     "\\.mjs$": preset.transform["\\.[jt]sx?$"],

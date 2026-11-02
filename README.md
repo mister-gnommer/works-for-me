@@ -75,6 +75,7 @@ src/
 - **Data** comes from Coople's public API through `fetch`, cached by TanStack Query per page and per job. The previous page stays visible (dimmed) while the next one loads:
   - list: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/list?pageNum=<n>&pageSize=30`
   - details: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/<workAssignmentId>`
+- **Styling**: Tailwind classes through NativeWind (`className`); the app's colours are named in `tailwind.config.js`.
 - **Error states**: both screens show loading, error-with-retry and empty or not-found states. Any non-OK response, or a body with `error: true`, counts as an error.
 - **Labels** load once per app run, each list on its own. If a list fails, the screen still works, the label is left out, and the list is fetched again on the next screen.
 - **Tests** (Jest): unit tests cover the API envelope and error handling, lookup label parsing, formatting, and favourite ids. Integration tests in `src/test/` render the real screens through Expo Router with only the network mocked (MSW); CI runs them with typecheck and lint.

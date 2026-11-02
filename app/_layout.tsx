@@ -1,6 +1,8 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 
+import "../global.css";
+
 import { queryClient } from "../src/api/queryClient";
 import { FavouritesProvider } from "../src/features/favourites/FavouritesProvider";
 
