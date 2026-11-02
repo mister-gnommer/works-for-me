@@ -26,7 +26,7 @@ interface Envelope<T> {
  * @returns the envelope's `data`
  */
 export async function getData<T>(
-  path: string,
+  path: string, // TODO use template literal
   headers?: Record<string, string>,
 ): Promise<T> {
   // React Native's fetch never times out on its own, so a stalled connection would spin forever.

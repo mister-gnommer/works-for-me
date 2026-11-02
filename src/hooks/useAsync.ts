@@ -38,6 +38,7 @@ export function useAsync<T>(
     return () => {
       ignore = true;
     };
+    // TODO: use useEffectEvent
     // `load` is a new closure on every render; `key` says when it really changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);

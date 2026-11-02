@@ -39,7 +39,7 @@ let cached: Promise<Lookups> | undefined;
 export function loadLookups(): Promise<Lookups> {
   cached ??= fetchAll().then(({ lookups, complete }) => {
     if (!complete) {
-      cached = undefined;
+      cached = undefined; // TODO(nit): don't drop whole cache if only one list failed
     }
     return lookups;
   });
