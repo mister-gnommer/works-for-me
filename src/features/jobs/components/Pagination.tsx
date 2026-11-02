@@ -12,7 +12,7 @@ export function Pagination({ page, pageCount, onChange }: Props) {
   // TODO use `total` to calc all pages and show `<< < 1, 2, 3, ... 14, 15 > >>` style OR infinite scroll
 
   return (
-    <View className="flex-row items-center justify-center gap-2 border-t-hairline border-line bg-white p-3">
+    <View className="flex-row items-center justify-center gap-2 border-t-hairline border-line bg-card p-3 dark:border-line-dark dark:bg-card-dark">
       {page > 0 && (
         <Arrow label="«" hint="First page" onPress={() => onChange(0)} />
       )}
@@ -22,7 +22,7 @@ export function Pagination({ page, pageCount, onChange }: Props) {
         disabled={page === 0}
         onPress={() => onChange(page - 1)}
       />
-      <Text className="min-w-[110px] text-center">
+      <Text className="min-w-[110px] text-center dark:text-ink-dark">
         Page {page + 1} of {pageCount}
       </Text>
       <Arrow
@@ -55,7 +55,9 @@ function Arrow({
       accessibilityState={{ disabled }}
       className="px-3.5 py-1.5"
     >
-      <Text className={`text-2xl ${disabled ? "text-line" : "text-brand"}`}>
+      <Text
+        className={`text-2xl ${disabled ? "text-line dark:text-neutral-700" : "text-brand dark:text-brand-dark"}`}
+      >
         {label}
       </Text>
     </Pressable>

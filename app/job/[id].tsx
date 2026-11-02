@@ -18,7 +18,7 @@ export default function JobDetailsScreen() {
 
   if (job.data) {
     return (
-      <View className="flex-1 bg-screen">
+      <View className="flex-1 bg-screen dark:bg-screen-dark">
         <JobDetailsView job={job.data} lookups={lookups} />
       </View>
     );

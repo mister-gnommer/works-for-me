@@ -36,7 +36,7 @@ export default function JobListScreen() {
   }
 
   return (
-    <View className="flex-1 bg-screen">
+    <View className="flex-1 bg-screen dark:bg-screen-dark">
       <JobListContent jobs={jobs} page={page} />
       {total !== undefined && (
         <Pagination

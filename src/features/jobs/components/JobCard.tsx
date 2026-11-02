@@ -14,19 +14,19 @@ interface Props {
 export function JobCard({ job, currency, onPress }: Props) {
   return (
     <Pressable
-      className="mx-3 mt-3 flex-row rounded-[10px] bg-white p-4"
+      className="mx-3 mt-3 flex-row rounded-[10px] bg-card p-4 dark:bg-card-dark"
       onPress={onPress}
       accessibilityRole="link"
     >
       <View className="flex-1 gap-1">
-        <Text className="text-base font-semibold">
+        <Text className="text-base font-semibold dark:text-ink-dark">
           {job.workAssignmentName}
         </Text>
-        <Text className="text-muted">
+        <Text className="text-muted dark:text-muted-dark">
           {job.jobLocation.zip} {job.jobLocation.city} ·{" "}
           {formatMoney(job.hourlyWage.amount, currency)}/h
         </Text>
-        <Text className="text-muted">
+        <Text className="text-muted dark:text-muted-dark">
           Starts {formatDateTime(job.periodFrom)}
         </Text>
       </View>

@@ -25,13 +25,13 @@ export function JobDetailsView({ job, lookups }: Props) {
   return (
     <ScrollView contentContainerClassName="p-4 gap-4">
       <View className="flex-row items-start gap-3">
-        <Text className="flex-1 text-[22px] font-bold">
+        <Text className="flex-1 text-[22px] font-bold dark:text-ink-dark">
           {job.workAssignmentName}
         </Text>
         <FavouriteButton jobId={job.workAssignmentId} />
       </View>
 
-      <View className="gap-2 rounded-[10px] bg-white p-4">
+      <View className="gap-2 rounded-[10px] bg-card p-4 dark:bg-card-dark">
         <Row
           label="Role"
           value={lookups.jobProfiles.get(job.jobSkill.jobProfileId)}
@@ -47,7 +47,7 @@ export function JobDetailsView({ job, lookups }: Props) {
         <Row label="Location" value={location} />
       </View>
 
-      <View className="gap-2 rounded-[10px] bg-white p-4">
+      <View className="gap-2 rounded-[10px] bg-card p-4 dark:bg-card-dark">
         <Row
           label="Hourly wage"
           value={`${formatMoney(job.hourlyWage.amount, lookups.currencies.get(job.hourlyWage.currencyId))}/h`}
@@ -83,8 +83,8 @@ function Row({ label, value }: { label: string; value?: string }) {
   }
   return (
     <View className="flex-row gap-3">
-      <Text className="w-[110px] text-muted">{label}</Text>
-      <Text className="flex-1">{value}</Text>
+      <Text className="w-[110px] text-muted dark:text-muted-dark">{label}</Text>
+      <Text className="flex-1 dark:text-ink-dark">{value}</Text>
     </View>
   );
 }
@@ -95,9 +95,11 @@ function Section({ title, text }: { title: string; text?: string }) {
     return null;
   }
   return (
-    <View className="gap-2 rounded-[10px] bg-white p-4">
-      <Text className="text-base font-semibold">{title}</Text>
-      <Text>{text.trim()}</Text>
+    <View className="gap-2 rounded-[10px] bg-card p-4 dark:bg-card-dark">
+      <Text className="text-base font-semibold dark:text-ink-dark">
+        {title}
+      </Text>
+      <Text className="dark:text-ink-dark">{text.trim()}</Text>
     </View>
   );
 }
