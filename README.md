@@ -75,6 +75,6 @@ src/
   - details: `GET https://www.coople.com/ch/resources/api/work-assignments/public-jobs/<workAssignmentId>`
 - **Error states**: both screens show loading, error-with-retry and empty or not-found states. Any non-OK response, or a body with `error: true`, counts as an error.
 - **Labels** load once per app run. If a lookup fails, the screen still works and the label is left out.
-- **Tests** (Jest) cover the API envelope and error handling, lookup loading, formatting, and favourite ids. There are no UI tests.
+- **Tests** (Jest): unit tests cover the API envelope and error handling, lookup loading, formatting, and favourite ids. Integration tests in `src/test/` render the real screens through Expo Router with only the network mocked (MSW); CI runs them with typecheck and lint.
 
 Technical decisions, the build plan, deferred ideas and the decision ledger are in [`docs/`](docs/).

@@ -10,7 +10,7 @@ interface Props {
 export function Pagination({ page, pageCount, onChange }: Props) {
   const isLast = page >= pageCount - 1;
   // TODO use `total` to calc all pages and show `<< < 1, 2, 3, ... 14, 15 > >>` style OR infinite scroll
-  
+
   return (
     <View style={styles.row}>
       {page > 0 && (
